@@ -42,6 +42,9 @@ in
 
   config = lib.mkMerge [
     {
+      # Otteretro, la primera app de la sesión Play (#114, #129).
+      programs.otteretro.enable = lib.mkDefault true;
+
       # Steam siempre: la sesión Play es Steam (#129).
       programs.steam = {
         enable = true;
