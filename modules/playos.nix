@@ -24,13 +24,65 @@ let
     cat > $out/share/wayland-sessions/play.desktop <<EOF
     [Desktop Entry]
     Name=Play
-    Comment=Steam a pantalla completa
-    Exec=steam-gamescope
+    Comment=Steam a pantalla completa, con Otteretro encima
+    Exec=${play}
     Type=Application
     EOF
   '';
 
   ppd = "${pkgs.power-profiles-daemon}/bin/powerprofilesctl";
+
+  # Otteretro como juego que no es de Steam (#129): Steam solo muestra en la
+  # sesión Play lo que lanza él (playos#6). El appid es el que usaría Steam ROM
+  # Manager: crc32 de Exe + AppName, con el bit alto encendido.
+  otteretroAppId = 3250732779;
+  otteretroGameId = "13961790973873750016"; # (appid << 32) | 0x02000000
+
+  # Agrega Otteretro a los accesos directos de cada cuenta de Steam si no está.
+  # Steam los lee al arrancar y los reescribe al salir: por eso corre antes.
+  steamShortcut = pkgs.writers.writePython3Bin "playos-steam-shortcut"
+    { libraries = [ pkgs.python3Packages.vdf ]; flakeIgnore = [ "E501" ]; } ''
+    import glob
+    import os
+    import shutil
+    import vdf
+
+    APPID = ${toString otteretroAppId}
+    EXE = '"/run/current-system/sw/bin/Otteretro"'
+
+    for config in glob.glob(os.path.expanduser("~/.local/share/Steam/userdata/*/config")):
+        path = os.path.join(config, "shortcuts.vdf")
+        data = {"shortcuts": {}}
+        if os.path.exists(path):
+            with open(path, "rb") as f:
+                data = vdf.binary_loads(f.read())
+        items = data.setdefault("shortcuts", {})
+        if any(int(s.get("appid", 0)) & 0xFFFFFFFF == APPID for s in items.values()):
+            continue
+        if os.path.exists(path) and not os.path.exists(path + ".antes-playos"):
+            shutil.copy2(path, path + ".antes-playos")
+        items[str(max(map(int, items), default=-1) + 1)] = {
+            "appid": APPID - 2**32,  # Steam lo guarda como entero con signo
+            "AppName": "Otteretro",
+            "Exe": EXE,
+            "StartDir": '"/run/current-system/sw/bin/"',
+            "icon": "/run/current-system/sw/share/icons/hicolor/128x128/apps/otteretro.png",
+            "ShortcutPath": "", "LaunchOptions": "", "IsHidden": 0,
+            "AllowDesktopConfig": 1, "AllowOverlay": 1, "OpenVR": 0, "Devkit": 0,
+            "DevkitGameID": "", "DevkitOverrideAppID": 0, "LastPlayTime": 0,
+            "FlatpakAppID": "", "tags": {},
+        }
+        with open(path + ".tmp", "wb") as f:
+            f.write(vdf.binary_dumps(data))
+        os.replace(path + ".tmp", path)
+  '';
+
+  # La sesión Play: el acceso directo (si falla, Steam abre igual) y Steam,
+  # que abre Otteretro solo (steamArgs).
+  play = pkgs.writeShellScript "playos-play" ''
+    ${steamShortcut}/bin/playos-steam-shortcut || echo "playos: no se pudo agregar Otteretro a Steam" >&2
+    exec /run/current-system/sw/bin/steam-gamescope
+  '';
 in
 {
   options.playos = {
@@ -49,6 +101,8 @@ in
       programs.steam = {
         enable = true;
         gamescopeSession.enable = true; # trae steam-gamescope
+        # Los de nixpkgs más abrir Otteretro al arrancar (playos#6).
+        gamescopeSession.steamArgs = [ "-tenfoot" "-pipewire-dmabuf" "steam://rungameid/${otteretroGameId}" ];
         remotePlay.openFirewall = true;
         localNetworkGameTransfers.openFirewall = true;
         extest.enable = true; # Steam Input en Wayland
