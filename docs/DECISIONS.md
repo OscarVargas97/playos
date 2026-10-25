@@ -1,6 +1,6 @@
 # Decisiones
 
-PlayOS no lleva un registro propio: sus decisiones se registran en el de Otteretro, `docs/historial/decisiones.md` del repo [otteretro](https://github.com/OscarVargas97/otteretro), que es el registro único del proyecto. Ese repo es privado.
+PlayOS no lleva un registro propio: sus decisiones se registran en el de Otteretro, `docs/historial/decisiones.md` del repo [otteretro](https://github.com/OscarVargas97/otteretro), que es el registro único del proyecto.
 
 | Tema | Decisiones |
 |---|---|
