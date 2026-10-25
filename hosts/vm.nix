@@ -6,4 +6,6 @@
     email = "player@example.com";
   };
   time.timeZone = "UTC";
+  # Todos los grupos encendidos, para que la VM los pruebe.
+  playos.legion.enable = true;
 }
