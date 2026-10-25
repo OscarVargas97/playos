@@ -3,7 +3,7 @@
     "ags": {
       "inputs": {
         "astal": "astal",
-        "nixpkgs": "nixpkgs_2"
+        "nixpkgs": "nixpkgs"
       },
       "locked": {
         "lastModified": 1775689345,
@@ -102,15 +102,15 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1792773339,
-        "narHash": "sha256-rZLrzrC6i+jnTAlvPZHogKDulY7WWDEv9hJeHieO7Zw=",
-        "owner": "NixOS",
+        "lastModified": 1775423009,
+        "narHash": "sha256-vPKLpjhIVWdDrfiUM8atW6YkIggCEKdSAlJPzzhkQlw=",
+        "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "3ec636362e1816bc2f0888fa0fa2c69f1bc9e504",
+        "rev": "68d8aa3d661f0e6bd5862291b5bb263b2a6595c9",
         "type": "github"
       },
       "original": {
-        "owner": "NixOS",
+        "owner": "nixos",
         "ref": "nixos-unstable",
         "repo": "nixpkgs",
         "type": "github"
@@ -134,22 +134,6 @@
     },
     "nixpkgs_2": {
       "locked": {
-        "lastModified": 1775423009,
-        "narHash": "sha256-vPKLpjhIVWdDrfiUM8atW6YkIggCEKdSAlJPzzhkQlw=",
-        "owner": "nixos",
-        "repo": "nixpkgs",
-        "rev": "68d8aa3d661f0e6bd5862291b5bb263b2a6595c9",
-        "type": "github"
-      },
-      "original": {
-        "owner": "nixos",
-        "ref": "nixos-unstable",
-        "repo": "nixpkgs",
-        "type": "github"
-      }
-    },
-    "nixpkgs_3": {
-      "locked": {
         "lastModified": 1789344334,
         "narHash": "sha256-vdhpDJ3Lr24lkZ+fDCjmBRRtw9/vcSzkqGJOJyF5h2U=",
         "owner": "NixOS",
@@ -166,21 +150,24 @@
     },
     "otteretro": {
       "inputs": {
-        "nixpkgs": "nixpkgs"
+        "nixpkgs": [
+          "workos",
+          "nixpkgs"
+        ]
       },
       "locked": {
-        "lastModified": 1792936122,
-        "narHash": "sha256-3NaJ4p5nJLR1gTBOXUyL+V2C2epZ2VnsLSl1zRLBQgo=",
-        "ref": "fase/p0-playos",
-        "rev": "9ff3c9c7130f88056cfbf16e5c7c4b0b42601a92",
-        "revCount": 12,
-        "type": "git",
-        "url": "https://github.com/OscarVargas97/otteretro"
+        "lastModified": 1792953961,
+        "narHash": "sha256-dkkeCRrPsgCv7J1gwiT+Ww9k1IfLIIY2mk0F5gAzVLs=",
+        "owner": "OscarVargas97",
+        "repo": "otteretro",
+        "rev": "b4c6eac70065b85df2847bdd051b5a7f2f2f977f",
+        "type": "github"
       },
       "original": {
-        "ref": "fase/p0-playos",
-        "type": "git",
-        "url": "https://github.com/OscarVargas97/otteretro"
+        "owner": "OscarVargas97",
+        "ref": "dev",
+        "repo": "otteretro",
+        "type": "github"
       }
     },
     "root": {
@@ -195,7 +182,7 @@
         "cyberShell": "cyberShell",
         "disko": "disko",
         "home-manager": "home-manager",
-        "nixpkgs": "nixpkgs_3",
+        "nixpkgs": "nixpkgs_2",
         "nixpkgs-unstable": "nixpkgs-unstable"
       },
       "locked": {
