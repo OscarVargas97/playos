@@ -2,7 +2,7 @@
 
 Mod de [workos](https://github.com/OscarVargas97/workos) para jugar: suma a workos lo de juegos (sesiones Work y Play, Steam, rendimiento, mandos y [Otteretro](https://github.com/OscarVargas97/otteretro)). Todo lo que tienes en workos sigue igual.
 
-> En construcción: hoy el flake ya arma un sistema workos con el módulo de PlayOS, pero el módulo todavía está vacío. Las sesiones y los juegos llegan en las próximas tareas.
+> En construcción: ya trae las sesiones **Work** (Hyprland) y **Play** (Steam a pantalla completa), que se eligen con F3 en la pantalla de acceso, y el llavero gnome-keyring. Otteretro y el resto de lo de juegos llegan en las próximas tareas.
 
 ## Cómo se usa
 
