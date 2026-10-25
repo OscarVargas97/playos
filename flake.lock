@@ -156,11 +156,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1792953961,
-        "narHash": "sha256-dkkeCRrPsgCv7J1gwiT+Ww9k1IfLIIY2mk0F5gAzVLs=",
+        "lastModified": 1792965088,
+        "narHash": "sha256-fbtLhtjfC6UGrZkzlZ85nAEdO3b/VHSCON7aCrMSqHA=",
         "owner": "OscarVargas97",
         "repo": "otteretro",
-        "rev": "b4c6eac70065b85df2847bdd051b5a7f2f2f977f",
+        "rev": "a31789730753bc81f596ab43d2f12f92b8fb645f",
         "type": "github"
       },
       "original": {
