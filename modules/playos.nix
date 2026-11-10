@@ -4,11 +4,12 @@
 { config, lib, pkgs, ... }:
 let
   cfg = config.playos;
-  group = name: default: lib.mkOption {
-    type = lib.types.bool;
-    inherit default;
-    description = "PlayOS: ${name}.";
-  };
+  group = name: default:
+    lib.mkOption {
+      type = lib.types.bool;
+      inherit default;
+      description = "PlayOS: ${name}.";
+    };
 
   # Las dos sesiones que ofrece el login (#105, #129): Work es la Hyprland de
   # workos; Play es la sesión gamescope de Steam, como SteamOS.
@@ -40,8 +41,10 @@ let
 
   # Agrega Otteretro a los accesos directos de cada cuenta de Steam si no está.
   # Steam los lee al arrancar y los reescribe al salir: por eso corre antes.
-  steamShortcut = pkgs.writers.writePython3Bin "playos-steam-shortcut"
-    { libraries = [ pkgs.python3Packages.vdf ]; flakeIgnore = [ "E501" ]; } ''
+  steamShortcut = pkgs.writers.writePython3Bin "playos-steam-shortcut" {
+    libraries = [ pkgs.python3Packages.vdf ];
+    flakeIgnore = [ "E501" ];
+  } ''
     import glob
     import os
     import shutil
@@ -83,13 +86,18 @@ let
     ${steamShortcut}/bin/playos-steam-shortcut || echo "playos: no se pudo agregar Otteretro a Steam" >&2
     exec /run/current-system/sw/bin/steam-gamescope
   '';
-in
-{
+in {
   options.playos = {
-    stores.enable = group "tiendas y apps de juego (Heroic, Lutris, Bottles, itch, Steam ROM Manager, Vesktop, OBS)" true;
-    performance.enable = group "rendimiento (GameMode con perfil de energía, MangoHud, LACT)" true;
-    controllers.enable = group "mandos (adaptador Xbox, hardware de Steam)" true;
-    legion.enable = group "Lenovo Legion (LenovoLegionLinux y OpenRGB); solo en esos portátiles" false;
+    stores.enable = group
+      "tiendas y apps de juego (Heroic, Lutris, Bottles, itch, Steam ROM Manager, Vesktop, OBS)"
+      true;
+    performance.enable =
+      group "rendimiento (GameMode con perfil de energía, MangoHud, LACT)" true;
+    controllers.enable =
+      group "mandos (adaptador Xbox, hardware de Steam)" true;
+    legion.enable = group
+      "Lenovo Legion (LenovoLegionLinux y OpenRGB); solo en esos portátiles"
+      false;
   };
 
   config = lib.mkMerge [
@@ -102,7 +110,11 @@ in
         enable = true;
         gamescopeSession.enable = true; # trae steam-gamescope
         # Los de nixpkgs más abrir Otteretro al arrancar (playos#6).
-        gamescopeSession.steamArgs = [ "-tenfoot" "-pipewire-dmabuf" "steam://rungameid/${otteretroGameId}" ];
+        gamescopeSession.steamArgs = [
+          "-tenfoot"
+          "-pipewire-dmabuf"
+          "steam://rungameid/${otteretroGameId}"
+        ];
         remotePlay.openFirewall = true;
         localNetworkGameTransfers.openFirewall = true;
         extest.enable = true; # Steam Input en Wayland
@@ -113,14 +125,15 @@ in
       # Igual que el login de workos (hosts/vm/configuration.nix), más la lista de
       # sesiones (F3 en tuigreet) y recordar la última elegida.
       # ponytail: copia el comando de workos; si workos lo cambia, se copia de nuevo.
-      services.greetd.settings.default_session.command = lib.mkForce (lib.concatStringsSep " " [
-        "${pkgs.tuigreet}/bin/tuigreet --time"
-        "--sessions ${sessions}/share/wayland-sessions --remember-session --cmd start-hyprland"
-        "--background matrix --matrix-colors '#00FF41,#008F11,#003B00'"
-        "--custom-title 'playos // acceso'"
-        "--greeting '  (=^.^=)\\n (\")_(\")\\nF3: Work o Play'"
-        "--asterisks --container-padding 2 --window-padding 2"
-      ]);
+      services.greetd.settings.default_session.command = lib.mkForce
+        (lib.concatStringsSep " " [
+          "${pkgs.tuigreet}/bin/tuigreet --time"
+          "--sessions ${sessions}/share/wayland-sessions --remember-session --cmd start-hyprland"
+          "--background matrix --matrix-colors '#00FF41,#008F11,#003B00'"
+          "--custom-title 'playos // acceso'"
+          "--greeting '  (=^.^=)\\n (\")_(\")\\nF3: Work o Play'"
+          "--asterisks --container-padding 2 --window-padding 2"
+        ]);
 
       # Llavero para las apps (Otteretro guarda ahí su llave maestra, otteretro#9):
       # se abre con la contraseña al entrar por greetd.
@@ -130,7 +143,13 @@ in
 
     (lib.mkIf cfg.stores.enable {
       environment.systemPackages = with pkgs; [
-        steam-rom-manager heroic lutris bottles itch vesktop obs-studio
+        steam-rom-manager
+        heroic
+        lutris
+        bottles
+        itch
+        vesktop
+        obs-studio
       ];
       programs.gpu-screen-recorder.enable = true;
     })
@@ -156,7 +175,8 @@ in
     })
 
     (lib.mkIf cfg.legion.enable {
-      boot.extraModulePackages = [ config.boot.kernelPackages.lenovo-legion-module ];
+      boot.extraModulePackages =
+        [ config.boot.kernelPackages.lenovo-legion-module ];
       environment.systemPackages = [ pkgs.lenovo-legion ];
       services.hardware.openrgb.enable = true;
     })
