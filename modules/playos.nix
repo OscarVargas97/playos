@@ -103,24 +103,26 @@ in {
   config = lib.mkMerge [
     {
       # Otteretro, la primera app de la sesión Play (#114, #129).
-      programs.otteretro.enable = lib.mkDefault true;
+      programs = {
+        otteretro.enable = lib.mkDefault true;
 
-      # Steam siempre: la sesión Play es Steam (#129).
-      programs.steam = {
-        enable = true;
-        gamescopeSession.enable = true; # trae steam-gamescope
-        # Los de nixpkgs más abrir Otteretro al arrancar (playos#6).
-        gamescopeSession.steamArgs = [
-          "-tenfoot"
-          "-pipewire-dmabuf"
-          "steam://rungameid/${otteretroGameId}"
-        ];
-        remotePlay.openFirewall = true;
-        localNetworkGameTransfers.openFirewall = true;
-        extest.enable = true; # Steam Input en Wayland
-        extraCompatPackages = [ pkgs.proton-ge-bin ];
+        # Steam siempre: la sesión Play es Steam (#129).
+        steam = {
+          enable = true;
+          gamescopeSession.enable = true; # trae steam-gamescope
+          # Los de nixpkgs más abrir Otteretro al arrancar (playos#6).
+          gamescopeSession.steamArgs = [
+            "-tenfoot"
+            "-pipewire-dmabuf"
+            "steam://rungameid/${otteretroGameId}"
+          ];
+          remotePlay.openFirewall = true;
+          localNetworkGameTransfers.openFirewall = true;
+          extest.enable = true; # Steam Input en Wayland
+          extraCompatPackages = [ pkgs.proton-ge-bin ];
+        };
+        gamescope.enable = true;
       };
-      programs.gamescope.enable = true;
 
       # Igual que el login de workos (hosts/vm/configuration.nix), más la lista de
       # sesiones (F3 en tuigreet) y recordar la última elegida.
