@@ -4,7 +4,13 @@ nix_archivos() { find . -name '*.nix' -not -path './.git/*' -not -path './legacy
 nix_cmd() { nix --extra-experimental-features 'nix-command flakes' "$@"; }
 nix_tool() { t=$1; shift; nix_cmd run "${NIX_PKGS:-github:NixOS/nixpkgs/nixos-25.05}#$t" -- "$@"; }
 
+# Cambio respecto del catálogo: en rapidos, sin nix en el PATH (p. ej. Windows) se salta con aviso; el CI lo exige siempre.
 nix_rapidos() {
+  command -v nix >/dev/null 2>&1 || { echo "aviso: sin nix, se saltan nixfmt/deadnix/statix (el CI los corre)" >&2; return 0; }
+  nix_lint
+}
+
+nix_lint() {
   echo "== nixfmt"
   # shortcut: rutas sin espacios, cuando haya .nix con espacios pasar a un bucle while read.
   nix_tool nixfmt --check $(nix_archivos)
@@ -15,7 +21,7 @@ nix_rapidos() {
 }
 
 nix_ci() {
-  nix_rapidos
+  nix_lint
   echo "== nix flake check"
   nix_cmd flake check
 }
