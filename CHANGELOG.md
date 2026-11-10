@@ -2,6 +2,13 @@
 
 Lo que trae cada versión de PlayOS, lo más nuevo arriba.
 
+## Calidad (en curso)
+
+`ci/11-calidad` · PR de la tarea #11
+
+### Nuevo
+- **Calidad de ia-qa (perfil nix)**: hooks de git (`commit-msg`, `pre-push`), checks `.calidad/checks.sh` (nixfmt, deadnix, statix y `nix flake check`), workflows de PR (flujo, checks, secretos, semgrep) y vigilancia de `main`. Para activar los hooks en tu clon: `git config core.hooksPath .githooks`.
+
 ## PlayOS y Linux (en curso)
 
 `fase/p0-playos` · PR #8, #9 y #10
