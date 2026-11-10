@@ -169,9 +169,11 @@ in {
     })
 
     (lib.mkIf cfg.controllers.enable {
-      hardware.xone.enable = true;
-      hardware.steam-hardware.enable = true;
-      hardware.bluetooth.enable = true;
+      hardware = {
+        xone.enable = true;
+        steam-hardware.enable = true;
+        bluetooth.enable = true;
+      };
     })
 
     (lib.mkIf cfg.legion.enable {
