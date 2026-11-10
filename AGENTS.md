@@ -27,6 +27,7 @@ repo privado/flake.nix
 | Para | Comando |
 |---|---|
 | Validar (módulo y VM de prueba) | `nix flake check` |
+| Checks de calidad (nixfmt, deadnix, statix) | `sh .calidad/checks.sh rapidos` (el CI corre `ci`) |
 | Actualizar workos | `nix flake update workos` y commitear `flake.lock` |
 
 Desde Windows no hay Nix: se prueba por ssh en una máquina Linux con Nix, copiando el repo a una carpeta temporal.
